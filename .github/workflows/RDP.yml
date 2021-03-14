@@ -9,35 +9,35 @@ jobs:
     timeout-minutes: 9999
 
     steps:
-    - name: Download Ngrok & NSSM
+    - name: Tải Ngrok và NSSM
       run: |
         Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/Ngrok-Exe/master/ngrok.exe -OutFile ngrok.exe
-        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/Windows2019RDP-US/main/Files/nssm.exe -OutFile nssm.exe
-    - name: Copy NSSM & Ngrok to Windows Directory.
+        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/gettovds/main/Files/nssm.exe -OutFile nssm.exe
+    - name: Sao chép NSSM và Ngrok vào thư mục Windows
       run: | 
         copy nssm.exe C:\Windows\System32
         copy ngrok.exe C:\Windows\System32
-    - name: Connect your NGROK account
+    - name: Kết nối đến tài khoản Ngrok của bạn
       run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-    - name: Download Important Files.
+    - name: Tải xuống tệp quan trọng
       run: |
-        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/Windows2019RDP-US/main/Files/NGROK-US.bat -OutFile NGROK-US.bat
-        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/Windows2019RDP-US/main/Files/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
-        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/Windows2019RDP-US/main/Files/loop.bat -OutFile loop.bat
-    - name: Make YML file for NGROK.
+        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/gettovds/main/Files/NGROK-US.bat -OutFile NGROK-US.bat
+        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/gettovds/main/Files/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
+        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/gettovds/main/Files/loop.bat -OutFile loop.bat
+    - name: Thiết lập tệp yml cho Ngrok
       run: start NGROK-US.bat
-    - name: Enable RDP Access.
+    - name: Bật quyền kết nối
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-    - name: Create Tunnel
+    - name: Tạo kết nối
       run: sc start ngrok
-    - name: Connect to your RDP 2core-7GB Ram.
+    - name: Thông tin kết nối
       run: cmd /c NGROK-CHECK.bat
-    - name: All Done! You can close Tab now! Maximum VM time:6h.
+    - name: Đã hoàn thành! Cấu hình 2-7 Thời gian 6 giờ
       run: cmd /c loop.bat 
       
     
