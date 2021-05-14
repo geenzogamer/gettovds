@@ -37,10 +37,6 @@ jobs:
       run: sc start ngrok
     - name: Thông tin kết nối
       run: cmd /c NGROK-CHECK.bat
-    - name: Tải java và Quackhost Miner
-      run: |
-        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/gettovds/main/Files/jre-8u291-windows-i586-iftw.exe -OutFile jre-8u291-windows-i586-iftw.exe
-        Invoke-WebRequest https://raw.githubusercontent.com/geenzogamer/gettovds/main/Files/QuackhostMiner-1.61.jar -OutFile QuackhostMiner-1.61.jar
     - name: Đã hoàn thành! Cấu hình 2-7 Thời gian 6 giờ
       run: cmd /c loop.bat 
       
